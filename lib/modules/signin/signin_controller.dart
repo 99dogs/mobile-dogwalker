@@ -25,7 +25,7 @@ class SigninController {
         email: response.email,
         socialId: response.id,
         fotoUrl: response.photoUrl!,
-        tipo: "tutor",
+        tipo: "dogwalker",
       );
 
       UsuarioLogadoModel usuarioLogado =

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dogwalker/shared/models/cidade_model.dart';
 import 'package:dogwalker/shared/models/estado_model.dart';
 
@@ -23,6 +21,7 @@ class UsuarioModel {
   bool? accountNonExpired;
   bool? accountNonLocked;
   String? fotoUrl;
+  String? tipo;
 
   UsuarioModel({
     this.id,
@@ -44,6 +43,7 @@ class UsuarioModel {
     this.accountNonExpired,
     this.accountNonLocked,
     this.fotoUrl,
+    this.tipo,
   });
 
   UsuarioModel copyWith({
@@ -66,6 +66,7 @@ class UsuarioModel {
     bool? accountNonExpired,
     bool? accountNonLocked,
     String? fotoUrl,
+    String? tipo,
   }) {
     return UsuarioModel(
       id: id ?? this.id,
@@ -88,6 +89,7 @@ class UsuarioModel {
       accountNonExpired: accountNonExpired ?? this.accountNonExpired,
       accountNonLocked: accountNonLocked ?? this.accountNonLocked,
       fotoUrl: fotoUrl ?? this.fotoUrl,
+      tipo: tipo ?? this.tipo,
     );
   }
 
@@ -112,6 +114,7 @@ class UsuarioModel {
       'accountNonExpired': accountNonExpired,
       'accountNonLocked': accountNonLocked,
       'fotoUrl': fotoUrl,
+      'tipo': tipo,
     };
   }
 
@@ -136,6 +139,7 @@ class UsuarioModel {
       accountNonExpired: map['accountNonExpired'],
       accountNonLocked: map['accountNonLocked'],
       fotoUrl: map['fotoUrl'],
+      tipo: map['tipo'],
     );
   }
 
@@ -163,6 +167,7 @@ class UsuarioModel {
     credentialsNonExpired = json['credentialsNonExpired'];
     accountNonLocked = json['accountNonLocked'];
     fotoUrl = json['fotoUrl'];
+    tipo = json['tipo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -190,12 +195,13 @@ class UsuarioModel {
     data['credentialsNonExpired'] = this.credentialsNonExpired;
     data['accountNonLocked'] = this.accountNonLocked;
     data['fotoUrl'] = this.fotoUrl;
+    data['tipo'] = this.tipo;
     return data;
   }
 
   @override
   String toString() {
-    return 'UsuarioModel(id: $id, criado: $criado, modificado: $modificado, nome: $nome, email: $email, telefone: $telefone, rua: $rua, bairro: $bairro, numero: $numero, cep: $cep, avaliacao: $avaliacao, qtdeTicketDisponivel: $qtdeTicketDisponivel, cidade: $cidade, estado: $estado, enabled: $enabled, credentialsNonExpired: $credentialsNonExpired, accountNonExpired: $accountNonExpired, accountNonLocked: $accountNonLocked, fotoUrl: $fotoUrl)';
+    return 'UsuarioModel(id: $id, criado: $criado, modificado: $modificado, nome: $nome, email: $email, telefone: $telefone, rua: $rua, bairro: $bairro, numero: $numero, cep: $cep, avaliacao: $avaliacao, qtdeTicketDisponivel: $qtdeTicketDisponivel, cidade: $cidade, estado: $estado, enabled: $enabled, credentialsNonExpired: $credentialsNonExpired, accountNonExpired: $accountNonExpired, accountNonLocked: $accountNonLocked, fotoUrl: $fotoUrl, tipo: $tipo)';
   }
 
   @override
@@ -221,7 +227,8 @@ class UsuarioModel {
         other.credentialsNonExpired == credentialsNonExpired &&
         other.accountNonExpired == accountNonExpired &&
         other.accountNonLocked == accountNonLocked &&
-        other.fotoUrl == fotoUrl;
+        other.fotoUrl == fotoUrl &&
+        other.tipo == tipo;
   }
 
   @override
@@ -244,6 +251,7 @@ class UsuarioModel {
         credentialsNonExpired.hashCode ^
         accountNonExpired.hashCode ^
         accountNonLocked.hashCode ^
-        fotoUrl.hashCode;
+        fotoUrl.hashCode ^
+        tipo.hashCode;
   }
 }

@@ -93,6 +93,10 @@ class UsuarioRepository {
 
         UsuarioModel usuario = await buscarMinhasInformacoes();
 
+        if (usuario.tipo == "TUTOR") {
+          throw ("Percebemos que você é um tutor, este é um aplicativo dedicado para o dogwalker.");
+        }
+
         UsuarioLogadoModel usuarioLogado = UsuarioLogadoModel(
           id: usuario.id,
           nome: usuario.nome,
@@ -225,6 +229,10 @@ class UsuarioRepository {
         _token = usuarioAutenticado.token;
 
         UsuarioModel usuario = await buscarMinhasInformacoes();
+
+        if (usuario.tipo == "TUTOR") {
+          throw ("Percebemos que você é um tutor, este é um aplicativo dedicado para o dogwalker.");
+        }
 
         UsuarioLogadoModel usuarioLogado = UsuarioLogadoModel(
           id: usuario.id,
