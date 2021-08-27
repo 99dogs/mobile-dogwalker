@@ -1,5 +1,6 @@
 import 'package:dogwalker/modules/deposito/meus_depositos/meus_depositos_page.dart';
 import 'package:dogwalker/modules/horario/meus_horarios/meus_horarios_page.dart';
+import 'package:dogwalker/modules/qualificacao/minhas_qualificacoes/minhas_qualificacoes_page.dart';
 import 'package:dogwalker/modules/saldo/meu_saldo/meu_saldo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dogwalker/modules/agenda/agenda_page.dart';
@@ -28,7 +29,8 @@ class _HomePageState extends State<HomePage> {
     MeusHorariosPage(),
     AgendaPage(),
     MeuSaldoPage(),
-    MeusDepositosPage()
+    MeusDepositosPage(),
+    MinhasQualificacoesPage(),
   ];
 
   @override

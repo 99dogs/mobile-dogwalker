@@ -1,36 +1,32 @@
-import 'package:flutter/material.dart';
-import 'package:dogwalker/modules/cachorro/detalhes/detalhes_page.dart';
-import 'package:dogwalker/modules/cachorro/meus_caes/meus_caes_controller.dart';
+import 'package:dogwalker/modules/qualificacao/qualificacao_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';
-import 'package:dogwalker/shared/themes/app_colors.dart';
-import 'package:dogwalker/shared/themes/app_images.dart';
 import 'package:dogwalker/shared/themes/app_text_styles.dart';
 import 'package:dogwalker/shared/widgets/shimmer_list_tile/shimmer_list_tile.dart';
+import 'package:flutter/material.dart';
 
-class MeusCaesListWidget extends StatefulWidget {
-  const MeusCaesListWidget({Key? key}) : super(key: key);
+class MinhasQualificacoesList extends StatefulWidget {
+  const MinhasQualificacoesList({Key? key}) : super(key: key);
 
   @override
-  _MeusCaesListWidgetState createState() => _MeusCaesListWidgetState();
+  _MinhasQualificacoesListState createState() =>
+      _MinhasQualificacoesListState();
 }
 
-class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
-  final controller = MeusCaesController();
+class _MinhasQualificacoesListState extends State<MinhasQualificacoesList> {
+  final controller = QualificacaoController();
 
   @override
   void initState() {
     super.initState();
-    start();
+    buscarQualificacoes();
   }
 
-  void start() async {
-    await controller.buscarTodos();
+  buscarQualificacoes() async {
+    await controller.buscarQualificacoes();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Container(
       child: ValueListenableBuilder(
         valueListenable: controller.state,
@@ -41,7 +37,7 @@ class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: ListView.builder(
-                  itemCount: 3,
+                  itemCount: 4,
                   itemBuilder: (context, index) {
                     return ShimmerListTileWidget();
                   },
@@ -49,7 +45,7 @@ class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
               ),
             );
           } else if (state == StateEnum.success) {
-            if (controller.cachorros.isNotEmpty) {
+            if (controller.qualificacoes.isNotEmpty) {
               return Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -58,10 +54,10 @@ class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
                   ),
                   child: RefreshIndicator(
                     onRefresh: () async {
-                      await controller.buscarTodos();
+                      await controller.buscarQualificacoes();
                     },
                     child: ListView.builder(
-                      itemCount: controller.cachorros.length,
+                      itemCount: controller.qualificacoes.length,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
@@ -81,53 +77,35 @@ class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
                                   ),
                                 ],
                               ),
-                              child: ListTile(
-                                title: Text(
-                                  controller.cachorros[index].nome!,
-                                  style: TextStyles.titleListTile,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
                                 ),
-                                subtitle: Text(
-                                    controller.cachorros[index].raca!.nome!),
-                                leading: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage(AppImages.logoDogwalker),
+                                child: ListTile(
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Text(
+                                      controller.qualificacoes[index]
+                                              .modalidade! +
+                                          ' - ' +
+                                          controller
+                                              .qualificacoes[index].titulo!,
+                                      style: TextStyles.titleListTile,
                                     ),
                                   ),
+                                  subtitle: Text(
+                                    controller.qualificacoes[index].descricao!,
+                                  ),
+                                  trailing: Icon(Icons.arrow_right_alt),
+                                  onTap: () {},
                                 ),
-                                trailing: Text(
-                                  controller.cachorros[index].porte!.nome!,
-                                  textDirection: TextDirection.rtl,
-                                ),
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    "/cachorro/detail",
-                                    arguments: controller.cachorros[index].id!,
-                                  );
-                                },
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
                                 bottom: 13,
                               ),
-                              child: Container(
-                                width: size.width,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                  color: AppColors.success,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(50),
-                                    bottomRight: Radius.circular(50),
-                                  ),
-                                ),
-                              ),
-                            )
+                            ),
                           ],
                         );
                       },
@@ -141,7 +119,7 @@ class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
                 child: Center(
                   child: Container(
                     child: Text(
-                      "Você ainda não cadastrou nenhum cão.",
+                      "Você ainda não cadastrou nenhuma qualificação.",
                       style: TextStyles.input,
                     ),
                   ),
@@ -164,7 +142,7 @@ class _MeusCaesListWidgetState extends State<MeusCaesListWidget> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        controller.buscarTodos();
+                        controller.buscarQualificacoes();
                       },
                       icon: Icon(Icons.refresh_outlined),
                       label: Text("Tentar novamente"),

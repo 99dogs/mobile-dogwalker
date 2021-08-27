@@ -9,7 +9,7 @@ class HomeController {
 
   HomeController._internal();
 
-  final paginaAtual = ValueNotifier<int>(2);
+  final paginaAtual = ValueNotifier<int>(0);
 
   mudarDePagina(index) {
     paginaAtual.value = index;

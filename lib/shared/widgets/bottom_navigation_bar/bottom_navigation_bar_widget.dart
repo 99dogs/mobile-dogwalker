@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:dogwalker/modules/home/home_controller.dart';
 import 'package:dogwalker/shared/themes/app_colors.dart';
 
@@ -47,6 +46,10 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
             BottomNavigationBarItem(
               icon: Icon(Icons.account_balance_wallet),
               label: 'Depósito',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.collections_bookmark),
+              label: 'Qualificações',
             ),
           ],
           currentIndex: homeController.paginaAtual.value,
