@@ -21,24 +21,30 @@ class MapsController {
     ),
   );
 
-  serviceEnabled() async {
+  Future<bool> serviceEnabled() async {
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        return;
+        return false;
       }
+      return _serviceEnabled;
     }
+    return _serviceEnabled;
   }
 
-  permissionGranted() async {
+  Future<bool> permissionGranted() async {
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        return;
+        return false;
       }
+      return true;
+    } else if (_permissionGranted == PermissionStatus.granted) {
+      return true;
     }
+    return true;
   }
 
   getCurrentLocation() async {
@@ -51,5 +57,19 @@ class MapsController {
     ];
 
     markers.value = newList;
+  }
+
+  Future<bool> backgroundMode(bool status) async {
+    bool statusService = await location.enableBackgroundMode(enable: status);
+    return statusService;
+  }
+
+  Future<bool> alterarConfigs() async {
+    bool changed = await location.changeSettings(
+      accuracy: LocationAccuracy.high,
+      interval: 3000,
+      distanceFilter: 0,
+    );
+    return changed;
   }
 }

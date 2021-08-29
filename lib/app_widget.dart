@@ -1,5 +1,6 @@
 import 'package:dogwalker/modules/deposito/meus_depositos/meus_depositos_page.dart';
 import 'package:dogwalker/modules/horario/meus_horarios/meus_horarios_page.dart';
+import 'package:dogwalker/modules/passeio/maps_widget/maps_widget.dart';
 import 'package:dogwalker/modules/saldo/meu_saldo/meu_saldo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dogwalker/modules/agenda/agenda_page.dart';
@@ -40,6 +41,9 @@ class AppWdiget extends StatelessWidget {
         "/horario/list": (context) => MeusHorariosPage(),
         "/saldo/list": (context) => MeuSaldoPage(),
         "/deposito/list": (context) => MeusDepositosPage(),
+        "/maps/detail": (context) => MapsWidget(
+              id: ModalRoute.of(context)!.settings.arguments as int,
+            ),
       },
     );
   }

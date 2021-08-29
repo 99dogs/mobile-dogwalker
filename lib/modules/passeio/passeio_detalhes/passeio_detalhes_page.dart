@@ -1,7 +1,8 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:location/location.dart';
-import 'package:dogwalker/modules/passeio/maps_widget/maps_widget.dart';
 import 'package:dogwalker/modules/passeio/passeio_detalhes/passeio_detalhes_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';
 import 'package:dogwalker/shared/themes/app_colors.dart';
@@ -23,6 +24,8 @@ class PasseioDetalhesPage extends StatefulWidget {
 class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
   final controller = PasseioDetalhesController();
 
+  String _scanBarcode = "";
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +34,26 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
 
   void start() async {
     await controller.init(widget.id);
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes = "";
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#FF280059', 'Cancelar', true, ScanMode.QR);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   @override
@@ -72,88 +95,321 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                     );
                   } else if (state == StateEnum.success) {
                     return Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: size.height * 0.7,
-                            width: size.width * 0.9,
-                            decoration: BoxDecoration(
-                              color: AppColors.shape,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Column(
-                              children: [
-                                ItemDetailWidget(
-                                  icon: Icons.nordic_walking_outlined,
-                                  label: "Dog walker",
-                                  info: controller.passeio.dogwalker!.nome!,
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          await controller.init(widget.id);
+                        },
+                        child: SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 20,
                                 ),
-                                ItemDetailWidget(
-                                  icon: FontAwesomeIcons.calendarCheck,
-                                  label: "Agendado para o dia",
-                                  info: controller.formatarData(
-                                    controller.passeio.datahora,
+                                child: Container(
+                                  height: size.height * 0.6,
+                                  width: size.width * 0.9,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.shape,
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
-                                ),
-                                ItemDetailWidget(
-                                  icon: FontAwesomeIcons.infoCircle,
-                                  label: "Último status",
-                                  info: controller.passeio.status!,
-                                ),
-                                Visibility(
-                                  visible:
-                                      controller.passeio.datahorafinalizacao !=
-                                              null
-                                          ? true
-                                          : false,
-                                  child: ItemDetailWidget(
-                                    icon: FontAwesomeIcons.calendarTimes,
-                                    label: "Finalizado dia",
-                                    info: controller.formatarData(
-                                      controller.passeio.datahorafinalizacao,
-                                    ),
-                                  ),
-                                ),
-                                ItemDetailWidget(
-                                  icon: FontAwesomeIcons.dog,
-                                  label: "Cachorro #1",
-                                  info: "Joe",
-                                ),
-                                Expanded(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      ElevatedButton.icon(
-                                        onPressed: () async {
-                                          showModalBottomSheet<void>(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container(
-                                                color: AppColors.background,
-                                                child: Container(
-                                                  child: MapsWidget(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        icon: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            FontAwesomeIcons.locationArrow,
-                                            size: 15,
+                                      ItemDetailWidget(
+                                        icon: Icons.tag_outlined,
+                                        label: "Identificador único",
+                                        info: controller.passeio.id!.toString(),
+                                      ),
+                                      ItemDetailWidget(
+                                        icon: Icons.nordic_walking_outlined,
+                                        label: "Dog walker",
+                                        info:
+                                            controller.passeio.dogwalker!.nome!,
+                                      ),
+                                      ItemDetailWidget(
+                                        icon: FontAwesomeIcons.calendarCheck,
+                                        label: "Agendado para o dia",
+                                        info: controller.formatarData(
+                                          controller.passeio.datahora,
+                                        ),
+                                      ),
+                                      ItemDetailWidget(
+                                        icon: FontAwesomeIcons.infoCircle,
+                                        label: "Último status",
+                                        info: controller.passeio.status!,
+                                      ),
+                                      Visibility(
+                                        visible: controller.passeio
+                                                    .datahorafinalizacao !=
+                                                null
+                                            ? true
+                                            : false,
+                                        child: ItemDetailWidget(
+                                          icon: FontAwesomeIcons.calendarTimes,
+                                          label: "Finalizado dia",
+                                          info: controller.formatarData(
+                                            controller
+                                                .passeio.datahorafinalizacao,
                                           ),
                                         ),
-                                        label: Text("Acompanhar passeio"),
+                                      ),
+                                      ItemDetailWidget(
+                                        icon: FontAwesomeIcons.dog,
+                                        label: "Cachorro #1",
+                                        info: controller.cachorros,
+                                      ),
+                                      ValueListenableBuilder(
+                                        valueListenable:
+                                            controller.stateAlterarStatus,
+                                        builder: (_, value, __) {
+                                          StateEnum state = value as StateEnum;
+                                          if (state == StateEnum.loading) {
+                                            return Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return Visibility(
+                                              visible:
+                                                  controller.passeio.status ==
+                                                          "Espera"
+                                                      ? true
+                                                      : false,
+                                              child: Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 7,
+                                                      ),
+                                                      child: SizedBox(
+                                                        width: 120,
+                                                        height: 35,
+                                                        child:
+                                                            ElevatedButton.icon(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            primary:
+                                                                Colors.green,
+                                                          ),
+                                                          icon: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .done_outline_outlined,
+                                                              size: 15,
+                                                            ),
+                                                          ),
+                                                          label:
+                                                              Text("Aceitar"),
+                                                          onPressed: () async {
+                                                            String? response =
+                                                                await controller
+                                                                    .alterarStatus(
+                                                              widget.id,
+                                                              "aceitar",
+                                                            );
+
+                                                            if (response !=
+                                                                    null &&
+                                                                response
+                                                                    .isNotEmpty) {
+                                                              CoolAlert.show(
+                                                                context:
+                                                                    context,
+                                                                title:
+                                                                    "Ocorreu um problema\n",
+                                                                text: response,
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .primary,
+                                                                type:
+                                                                    CoolAlertType
+                                                                        .error,
+                                                                confirmBtnText:
+                                                                    "Fechar",
+                                                                confirmBtnColor:
+                                                                    AppColors
+                                                                        .shape,
+                                                                confirmBtnTextStyle:
+                                                                    TextStyles
+                                                                        .buttonGray,
+                                                              );
+                                                            } else {
+                                                              await controller
+                                                                  .init(widget
+                                                                      .id);
+                                                            }
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 7,
+                                                      ),
+                                                      child: SizedBox(
+                                                        width: 120,
+                                                        height: 35,
+                                                        child:
+                                                            ElevatedButton.icon(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            primary: AppColors
+                                                                .delete,
+                                                          ),
+                                                          icon: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Icon(
+                                                              Icons.close,
+                                                              size: 15,
+                                                            ),
+                                                          ),
+                                                          label:
+                                                              Text("Recusar"),
+                                                          onPressed:
+                                                              () async {},
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      Visibility(
+                                        visible: controller.passeio.status ==
+                                                "Aceito"
+                                            ? true
+                                            : false,
+                                        child: Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton.icon(
+                                                onPressed: () async {
+                                                  await scanQR();
+                                                  String? response = "";
+                                                  if (_scanBarcode != "-1" &&
+                                                      _scanBarcode ==
+                                                          widget.id
+                                                              .toString()) {
+                                                    response = await controller
+                                                        .alterarStatus(
+                                                      widget.id,
+                                                      "iniciar",
+                                                    );
+                                                  } else if (_scanBarcode !=
+                                                      widget.id.toString()) {
+                                                    response =
+                                                        "Passeio diferente do atual";
+                                                  }
+
+                                                  if (response != null &&
+                                                      response.isNotEmpty) {
+                                                    CoolAlert.show(
+                                                      context: context,
+                                                      title:
+                                                          "Ocorreu um problema\n",
+                                                      text: response,
+                                                      backgroundColor:
+                                                          AppColors.primary,
+                                                      type: CoolAlertType.error,
+                                                      confirmBtnText: "Fechar",
+                                                      confirmBtnColor:
+                                                          AppColors.shape,
+                                                      confirmBtnTextStyle:
+                                                          TextStyles.buttonGray,
+                                                    );
+                                                  } else {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                      context,
+                                                      "/maps/detail",
+                                                      arguments: widget.id,
+                                                    );
+                                                  }
+                                                },
+                                                icon: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.qr_code_2_outlined,
+                                                    size: 15,
+                                                  ),
+                                                ),
+                                                label: Text("Ler QrCode"),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: controller.passeio.status ==
+                                                "Andamento"
+                                            ? true
+                                            : false,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 150,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: ElevatedButton.icon(
+                                                icon: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                    Icons.map_outlined,
+                                                    size: 15,
+                                                  ),
+                                                ),
+                                                label: Text("Ver andamento"),
+                                                onPressed: () async {
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                    context,
+                                                    "/maps/detail",
+                                                    arguments: widget.id,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     );
                   } else {

@@ -57,7 +57,7 @@ class _SignInPageState extends State<SignInPage> {
                       child: Column(
                         children: [
                           Text(
-                            "99Dogs",
+                            "99Dogs - Dogwalker",
                             style: TextStyles.titleLogo,
                           ),
                           Text(

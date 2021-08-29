@@ -120,4 +120,30 @@ class PasseioRepository {
       throw (e);
     }
   }
+
+  Future<String?> alterarStatus(int id, String novoStatus) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/passeio/$id/$novoStatus",
+      );
+
+      var response = await _client.put(
+        url,
+        headers: await this.headers(),
+      );
+
+      if (response.statusCode == 200) {
+        return "";
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        throw ("Ocorreu um problema inesperado.");
+      } else {
+        ResponseDataModel responseData =
+            ResponseDataModel.fromJson(response.body);
+
+        throw (responseData.mensagem);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
 }
