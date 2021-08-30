@@ -28,11 +28,13 @@ class PasseioDetalhesController {
       state.value = StateEnum.loading;
       passeio = await passeioRepository.buscarPorId(passeioId);
 
-      if (cachorros.isEmpty) {
-        passeio.cachorros!.forEach((element) {
-          cachorros = cachorros + element.nome! + ",";
-        });
-        cachorros = cachorros.substring(0, cachorros.length - 1);
+      if (cachorros == "") {
+        if (passeio.cachorros != null && passeio.cachorros!.length > 0) {
+          passeio.cachorros!.forEach((element) {
+            cachorros = cachorros + element.nome! + ",";
+          });
+          cachorros = cachorros.substring(0, cachorros.length - 1);
+        }
       }
 
       state.value = StateEnum.success;

@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:dogwalker/repositories/passeio_repository.dart';
+import 'package:dogwalker/shared/models/passeio_lat_long_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapsController {
+  final passeioRepository = PasseioRepository();
   Completer<GoogleMapController> googleMapController = Completer();
 
   Location location = new Location();
@@ -67,9 +70,19 @@ class MapsController {
   Future<bool> alterarConfigs() async {
     bool changed = await location.changeSettings(
       accuracy: LocationAccuracy.high,
-      interval: 3000,
+      interval: 7000,
       distanceFilter: 0,
     );
     return changed;
+  }
+
+  Future<bool> registrarLatLong(
+      int passeioId, LocationData currentLocation) async {
+    PasseioLatLongModel model = PasseioLatLongModel(
+      passeioId: passeioId,
+      latitude: currentLocation.latitude.toString(),
+      longitude: currentLocation.longitude.toString(),
+    );
+    return await passeioRepository.registrarLatLong(model);
   }
 }

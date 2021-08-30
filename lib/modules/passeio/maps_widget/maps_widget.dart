@@ -63,8 +63,8 @@ class _MapsWidgetState extends State<MapsWidget> {
     await controller.alterarConfigs();
     locationSubscription = controller.location.onLocationChanged.listen(
       (LocationData cLoc) {
-        print(cLoc);
         currentLocation = cLoc;
+        registrarLatLong();
         updatePinOnMap();
       },
     );
@@ -80,6 +80,10 @@ class _MapsWidgetState extends State<MapsWidget> {
 
     if (!mounted) return;
 
+    final icon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(24, 24)),
+        'assets/images/dogwalker-walking-icon.png');
+
     final GoogleMapController controllerMap =
         await controller.googleMapController.future;
     controllerMap.animateCamera(CameraUpdate.newCameraPosition(cPosition));
@@ -91,10 +95,18 @@ class _MapsWidgetState extends State<MapsWidget> {
 
         _markers.removeWhere((m) => m.markerId.value == 'dogwalker');
         _markers.add(
-          Marker(markerId: MarkerId('dogwalker'), position: pinPosition),
+          Marker(
+            icon: icon,
+            markerId: MarkerId('dogwalker'),
+            position: pinPosition,
+          ),
         );
       },
     );
+  }
+
+  void registrarLatLong() async {
+    await controller.registrarLatLong(widget.id, currentLocation);
   }
 
   Future<void> scanQR() async {
@@ -120,92 +132,96 @@ class _MapsWidgetState extends State<MapsWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Container(
-        color: AppColors.background,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 60,
-              color: AppColors.primary,
-            ),
-            Container(
-              color: AppColors.background,
-              child: Column(
-                children: [
-                  TitlePageWidget(
-                    title: "Andamento do passeio",
-                    enableBackButton: true,
-                    routePage: "/passeio/detail",
-                    args: widget.id,
-                  ),
-                ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Container(
+          color: AppColors.background,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 60,
+                color: AppColors.primary,
               ),
-            ),
-            Container(
-              height: size.height - 175,
-              child: GoogleMap(
-                myLocationEnabled: false,
-                zoomControlsEnabled: true,
-                markers: _markers,
-                initialCameraPosition: _inicialCameraPosition,
-                mapType: MapType.normal,
-                onMapCreated: (GoogleMapController mapsController) {
-                  controller.googleMapController.complete(mapsController);
-                },
+              Container(
+                color: AppColors.background,
+                child: Column(
+                  children: [
+                    TitlePageWidget(
+                      title: "Andamento do passeio",
+                      enableBackButton: true,
+                      routePage: "/passeio/detail",
+                      args: widget.id,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                height: size.height - 175,
+                child: GoogleMap(
+                  myLocationEnabled: false,
+                  zoomControlsEnabled: true,
+                  markers: _markers,
+                  initialCameraPosition: _inicialCameraPosition,
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController mapsController) {
+                    controller.googleMapController.complete(mapsController);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            primary: AppColors.delete,
-          ),
-          icon: Icon(
-            Icons.done_all_outlined,
-            size: 15,
-          ),
-          label: Text("Finalizar"),
-          onPressed: () async {
-            await scanQR();
-            String? response = "";
-            if (_scanBarcode != "-1" && _scanBarcode == widget.id.toString()) {
-              response = await passeioDetalhesController.alterarStatus(
-                widget.id,
-                "finalizar",
-              );
-            } else if (_scanBarcode != widget.id.toString()) {
-              response = "Passeio diferente do atual.";
-            } else {
-              response = "Não foi possível ler o código.";
-            }
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.delete,
+            ),
+            icon: Icon(
+              Icons.done_all_outlined,
+              size: 15,
+            ),
+            label: Text("Finalizar"),
+            onPressed: () async {
+              await scanQR();
+              String? response = "";
+              if (_scanBarcode != "-1" &&
+                  _scanBarcode == widget.id.toString()) {
+                response = await passeioDetalhesController.alterarStatus(
+                  widget.id,
+                  "finalizar",
+                );
+              } else if (_scanBarcode != widget.id.toString()) {
+                response = "Passeio diferente do atual.";
+              } else {
+                response = "Não foi possível ler o código.";
+              }
 
-            if (response != null && response.isNotEmpty) {
-              CoolAlert.show(
-                context: context,
-                title: "Ocorreu um problema\n",
-                text: response,
-                backgroundColor: AppColors.primary,
-                type: CoolAlertType.error,
-                confirmBtnText: "Fechar",
-                confirmBtnColor: AppColors.shape,
-                confirmBtnTextStyle: TextStyles.buttonGray,
-              );
-            } else {
-              await controller.backgroundMode(false);
-              await locationSubscription.cancel();
+              if (response != null && response.isNotEmpty) {
+                CoolAlert.show(
+                  context: context,
+                  title: "Ocorreu um problema\n",
+                  text: response,
+                  backgroundColor: AppColors.primary,
+                  type: CoolAlertType.error,
+                  confirmBtnText: "Fechar",
+                  confirmBtnColor: AppColors.shape,
+                  confirmBtnTextStyle: TextStyles.buttonGray,
+                );
+              } else {
+                await controller.backgroundMode(false);
+                await locationSubscription.cancel();
 
-              Navigator.pushReplacementNamed(
-                context,
-                "/passeio/detail",
-                arguments: widget.id,
-              );
-            }
-          },
+                Navigator.pushReplacementNamed(
+                  context,
+                  "/passeio/detail",
+                  arguments: widget.id,
+                );
+              }
+            },
+          ),
         ),
       ),
     );

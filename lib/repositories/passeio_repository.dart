@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dogwalker/shared/models/passeio_lat_long_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:dogwalker/shared/auth/auth_controller.dart';
@@ -144,6 +145,30 @@ class PasseioRepository {
       }
     } catch (e) {
       throw (e);
+    }
+  }
+
+  Future<bool> registrarLatLong(PasseioLatLongModel model) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/passeio/lat-long",
+      );
+
+      var response = await _client.post(
+        url,
+        headers: await this.headers(),
+        body: model.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        return false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 }

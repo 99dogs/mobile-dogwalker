@@ -45,14 +45,14 @@ class _MeuPerfilPageState extends State<MeuPerfilPage> {
   void start() async {
     await controller.obterDados();
     if (controller.usuario.id != 0) {
-      cepInputTextController.text = controller.usuario.cep!;
-      nomeInputTextController.text = controller.usuario.nome!;
-      emailInputTextController.text = controller.usuario.email!;
-      telefoneInputTextController.text = controller.usuario.telefone!;
-      ruaInputTextController.text = controller.usuario.rua!;
-      numeroInputTextController.text = controller.usuario.numero!;
-      bairroInputTextController.text = controller.usuario.bairro!;
-      controller.buscarCidades(controller.usuario.estado!.id!);
+      cepInputTextController.text = controller.usuario.cep ?? '';
+      nomeInputTextController.text = controller.usuario.nome ?? '';
+      emailInputTextController.text = controller.usuario.email ?? '';
+      telefoneInputTextController.text = controller.usuario.telefone ?? '';
+      ruaInputTextController.text = controller.usuario.rua ?? '';
+      numeroInputTextController.text = controller.usuario.numero ?? '';
+      bairroInputTextController.text = controller.usuario.bairro ?? '';
+      controller.buscarCidades(controller.usuario.estado!.id ?? 0);
     }
   }
 

@@ -101,6 +101,7 @@ class UsuarioRepository {
           id: usuario.id,
           nome: usuario.nome,
           token: _token,
+          fotoUrl: usuario.fotoUrl,
         );
 
         return usuarioLogado;

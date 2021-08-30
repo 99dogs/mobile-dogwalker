@@ -1,4 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:dogwalker/shared/widgets/label_button/label_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -109,7 +110,7 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                   vertical: 20,
                                 ),
                                 child: Container(
-                                  height: size.height * 0.6,
+                                  height: size.height * 0.70,
                                   width: size.width * 0.9,
                                   decoration: BoxDecoration(
                                     color: AppColors.shape,
@@ -123,22 +124,11 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                         info: controller.passeio.id!.toString(),
                                       ),
                                       ItemDetailWidget(
-                                        icon: Icons.nordic_walking_outlined,
-                                        label: "Dog walker",
-                                        info:
-                                            controller.passeio.dogwalker!.nome!,
-                                      ),
-                                      ItemDetailWidget(
                                         icon: FontAwesomeIcons.calendarCheck,
                                         label: "Agendado para o dia",
                                         info: controller.formatarData(
                                           controller.passeio.datahora,
                                         ),
-                                      ),
-                                      ItemDetailWidget(
-                                        icon: FontAwesomeIcons.infoCircle,
-                                        label: "Último status",
-                                        info: controller.passeio.status!,
                                       ),
                                       Visibility(
                                         visible: controller.passeio
@@ -156,9 +146,59 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                         ),
                                       ),
                                       ItemDetailWidget(
+                                        icon: Icons.person_outline_outlined,
+                                        label: "Tutor",
+                                        info: controller.passeio.tutor!.nome!,
+                                      ),
+                                      ItemDetailWidget(
                                         icon: FontAwesomeIcons.dog,
-                                        label: "Cachorro #1",
+                                        label: "Cachorro",
                                         info: controller.cachorros,
+                                        enableToggleDetail: true,
+                                        onTap: () {
+                                          showModalBottomSheet<void>(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Container(
+                                                color: AppColors.background,
+                                                child: ListView.builder(
+                                                  itemCount: controller.passeio
+                                                      .cachorros!.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      title: Text(
+                                                        controller
+                                                                .passeio
+                                                                .cachorros![
+                                                                    index]
+                                                                .nome! +
+                                                            " - " +
+                                                            controller
+                                                                .passeio
+                                                                .cachorros![
+                                                                    index]
+                                                                .porte!
+                                                                .nome!,
+                                                      ),
+                                                      subtitle: Text(
+                                                        controller
+                                                            .passeio
+                                                            .cachorros![index]
+                                                            .comportamento!,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                      ItemDetailWidget(
+                                        icon: FontAwesomeIcons.infoCircle,
+                                        label: "Último status",
+                                        info: controller.passeio.status!,
                                       ),
                                       ValueListenableBuilder(
                                         valueListenable:
@@ -186,109 +226,99 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                                       ? true
                                                       : false,
                                               child: Expanded(
-                                                child: Column(
+                                                child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        vertical: 7,
-                                                      ),
-                                                      child: SizedBox(
-                                                        width: 120,
-                                                        height: 35,
-                                                        child:
-                                                            ElevatedButton.icon(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            primary:
-                                                                Colors.green,
-                                                          ),
-                                                          icon: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .done_outline_outlined,
-                                                              size: 15,
-                                                            ),
-                                                          ),
-                                                          label:
-                                                              Text("Aceitar"),
-                                                          onPressed: () async {
-                                                            String? response =
-                                                                await controller
-                                                                    .alterarStatus(
-                                                              widget.id,
-                                                              "aceitar",
-                                                            );
-
-                                                            if (response !=
-                                                                    null &&
-                                                                response
-                                                                    .isNotEmpty) {
-                                                              CoolAlert.show(
-                                                                context:
-                                                                    context,
-                                                                title:
-                                                                    "Ocorreu um problema\n",
-                                                                text: response,
-                                                                backgroundColor:
-                                                                    AppColors
-                                                                        .primary,
-                                                                type:
-                                                                    CoolAlertType
-                                                                        .error,
-                                                                confirmBtnText:
-                                                                    "Fechar",
-                                                                confirmBtnColor:
-                                                                    AppColors
-                                                                        .shape,
-                                                                confirmBtnTextStyle:
-                                                                    TextStyles
-                                                                        .buttonGray,
-                                                              );
-                                                            } else {
-                                                              await controller
-                                                                  .init(widget
-                                                                      .id);
-                                                            }
-                                                          },
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                          ElevatedButton.icon(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          primary: Colors.green,
                                                         ),
+                                                        icon: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Icon(
+                                                            Icons
+                                                                .done_outline_outlined,
+                                                            size: 15,
+                                                          ),
+                                                        ),
+                                                        label: Text("Aceitar"),
+                                                        onPressed: () async {
+                                                          String? response =
+                                                              await controller
+                                                                  .alterarStatus(
+                                                            widget.id,
+                                                            "aceitar",
+                                                          );
+
+                                                          if (response !=
+                                                                  null &&
+                                                              response
+                                                                  .isNotEmpty) {
+                                                            CoolAlert.show(
+                                                              context: context,
+                                                              title:
+                                                                  "Ocorreu um problema\n",
+                                                              text: response,
+                                                              backgroundColor:
+                                                                  AppColors
+                                                                      .primary,
+                                                              type:
+                                                                  CoolAlertType
+                                                                      .error,
+                                                              confirmBtnText:
+                                                                  "Fechar",
+                                                              confirmBtnColor:
+                                                                  AppColors
+                                                                      .shape,
+                                                              confirmBtnTextStyle:
+                                                                  TextStyles
+                                                                      .buttonGray,
+                                                            );
+                                                          } else {
+                                                            await controller
+                                                                .init(
+                                                                    widget.id);
+                                                          }
+                                                        },
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        vertical: 7,
-                                                      ),
-                                                      child: SizedBox(
-                                                        width: 120,
-                                                        height: 35,
-                                                        child:
-                                                            ElevatedButton.icon(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            primary: AppColors
-                                                                .delete,
-                                                          ),
-                                                          icon: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Icon(
-                                                              Icons.close,
-                                                              size: 15,
-                                                            ),
-                                                          ),
-                                                          label:
-                                                              Text("Recusar"),
-                                                          onPressed:
-                                                              () async {},
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                          ElevatedButton.icon(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          primary:
+                                                              AppColors.delete,
                                                         ),
+                                                        icon: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Icon(
+                                                            Icons.close,
+                                                            size: 15,
+                                                          ),
+                                                        ),
+                                                        label: Text("Recusar"),
+                                                        onPressed: () async {},
                                                       ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
                                                     ),
                                                   ],
                                                 ),
@@ -303,63 +333,78 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                             ? true
                                             : false,
                                         child: Expanded(
-                                          child: Column(
+                                          child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              ElevatedButton.icon(
-                                                onPressed: () async {
-                                                  await scanQR();
-                                                  String? response = "";
-                                                  if (_scanBarcode != "-1" &&
-                                                      _scanBarcode ==
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: ElevatedButton.icon(
+                                                  onPressed: () async {
+                                                    await scanQR();
+                                                    if (_scanBarcode != "-1") {
+                                                      String? response = "";
+                                                      if (_scanBarcode ==
                                                           widget.id
                                                               .toString()) {
-                                                    response = await controller
-                                                        .alterarStatus(
-                                                      widget.id,
-                                                      "iniciar",
-                                                    );
-                                                  } else if (_scanBarcode !=
-                                                      widget.id.toString()) {
-                                                    response =
-                                                        "Passeio diferente do atual";
-                                                  }
+                                                        response =
+                                                            await controller
+                                                                .alterarStatus(
+                                                          widget.id,
+                                                          "iniciar",
+                                                        );
+                                                      } else if (_scanBarcode !=
+                                                          widget.id
+                                                              .toString()) {
+                                                        response =
+                                                            "Passeio diferente do atual";
+                                                      }
 
-                                                  if (response != null &&
-                                                      response.isNotEmpty) {
-                                                    CoolAlert.show(
-                                                      context: context,
-                                                      title:
-                                                          "Ocorreu um problema\n",
-                                                      text: response,
-                                                      backgroundColor:
-                                                          AppColors.primary,
-                                                      type: CoolAlertType.error,
-                                                      confirmBtnText: "Fechar",
-                                                      confirmBtnColor:
-                                                          AppColors.shape,
-                                                      confirmBtnTextStyle:
-                                                          TextStyles.buttonGray,
-                                                    );
-                                                  } else {
-                                                    Navigator
-                                                        .pushReplacementNamed(
-                                                      context,
-                                                      "/maps/detail",
-                                                      arguments: widget.id,
-                                                    );
-                                                  }
-                                                },
-                                                icon: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Icon(
-                                                    Icons.qr_code_2_outlined,
-                                                    size: 15,
+                                                      if (response != null &&
+                                                          response.isNotEmpty) {
+                                                        CoolAlert.show(
+                                                          context: context,
+                                                          title:
+                                                              "Ocorreu um problema\n",
+                                                          text: response,
+                                                          backgroundColor:
+                                                              AppColors.primary,
+                                                          type: CoolAlertType
+                                                              .error,
+                                                          confirmBtnText:
+                                                              "Fechar",
+                                                          confirmBtnColor:
+                                                              AppColors.shape,
+                                                          confirmBtnTextStyle:
+                                                              TextStyles
+                                                                  .buttonGray,
+                                                        );
+                                                      } else {
+                                                        Navigator
+                                                            .pushReplacementNamed(
+                                                          context,
+                                                          "/maps/detail",
+                                                          arguments: widget.id,
+                                                        );
+                                                      }
+                                                    }
+                                                  },
+                                                  icon: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Icon(
+                                                      Icons.qr_code_2_outlined,
+                                                      size: 15,
+                                                    ),
                                                   ),
+                                                  label: Text("Ler QrCode"),
                                                 ),
-                                                label: Text("Ler QrCode"),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
                                               ),
                                             ],
                                           ),
@@ -370,37 +415,41 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                                 "Andamento"
                                             ? true
                                             : false,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 150,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ElevatedButton.icon(
-                                                icon: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Icon(
-                                                    Icons.map_outlined,
-                                                    size: 15,
-                                                  ),
-                                                ),
-                                                label: Text("Ver andamento"),
-                                                onPressed: () async {
-                                                  Navigator
-                                                      .pushReplacementNamed(
-                                                    context,
-                                                    "/maps/detail",
-                                                    arguments: widget.id,
-                                                  );
-                                                },
+                                        child: Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
                                               ),
-                                            ),
-                                          ],
+                                              Expanded(
+                                                child: ElevatedButton.icon(
+                                                  icon: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Icon(
+                                                      Icons.map_outlined,
+                                                      size: 15,
+                                                    ),
+                                                  ),
+                                                  label: Text("Ver andamento"),
+                                                  onPressed: () async {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                      context,
+                                                      "/maps/detail",
+                                                      arguments: widget.id,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -439,6 +488,25 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                     );
                   }
                 },
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          height: 56,
+          child: Row(
+            children: [
+              Expanded(
+                child: LabelButton(
+                  label: "Voltar",
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      "/home",
+                    );
+                  },
+                  style: TextStyles.buttonPrimary,
+                ),
               ),
             ],
           ),
