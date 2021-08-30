@@ -1,3 +1,4 @@
+import 'package:dogwalker/modules/saldo/meu_saldo_list/meu_saldo_list.dart';
 import 'package:dogwalker/shared/widgets/title_page_widget/title_page_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,9 @@ class MeuSaldoPage extends StatelessWidget {
       child: Column(
         children: [
           TitlePageWidget(
-            title: "Meu saldo",
+            title: "Meus Saldos",
           ),
+          MeuSaldoList(),
         ],
       ),
     );
