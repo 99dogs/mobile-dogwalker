@@ -1,7 +1,9 @@
 import 'package:dogwalker/modules/deposito/meus_depositos/meus_depositos_page.dart';
 import 'package:dogwalker/modules/horario/meus_horarios/meus_horarios_page.dart';
 import 'package:dogwalker/modules/qualificacao/minhas_qualificacoes/minhas_qualificacoes_page.dart';
+import 'package:dogwalker/modules/saldo/SaldoController.dart';
 import 'package:dogwalker/modules/saldo/meu_saldo/meu_saldo_page.dart';
+import 'package:dogwalker/shared/models/saldo_model.dart';
 import 'package:flutter/material.dart';
 import 'package:dogwalker/modules/agenda/agenda_page.dart';
 import 'package:dogwalker/modules/home/home_controller.dart';
@@ -22,7 +24,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final homeController = HomeController();
   final authController = AuthController();
+  final saldoController = SaldoController();
   UsuarioLogadoModel _usuario = UsuarioLogadoModel();
+  List<SaldoModel> saldos = [];
+  bool existeSaldo = false;
 
   final pages = [
     MeusPasseiosPage(),
@@ -34,7 +39,25 @@ class _HomePageState extends State<HomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    buscarSaldo();
+  }
+
+  buscarSaldo() async {
+    await saldoController.buscarTodos();
+    if (mounted) {
+      if (saldoController.saldos.length > 0) {
+        setState(() {
+          existeSaldo = true;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    buscarSaldo();
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -118,15 +141,31 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: ValueListenableBuilder(
           valueListenable: homeController.paginaAtual,
           builder: (_, currentPage, __) {
-            if (currentPage == 1) {
-              return FloatingActionButton(
-                onPressed: () {
-                  if (currentPage == 1) {
+            if (currentPage == 1 || currentPage == 3) {
+              if (currentPage == 1) {
+                return FloatingActionButton(
+                  onPressed: () {
                     Navigator.pushReplacementNamed(context, "/horario/add");
-                  }
-                },
-                child: Icon(Icons.add),
-              );
+                  },
+                  child: Icon(Icons.add),
+                );
+              }
+              if (currentPage == 3) {
+                return Visibility(
+                  visible: existeSaldo,
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        "/saldo/solicitar-deposito",
+                      );
+                    },
+                    icon: Icon(Icons.account_balance_wallet_outlined),
+                    label: Text("Solicitar depósito"),
+                  ),
+                );
+              }
+              return Container();
             } else {
               return Container();
             }

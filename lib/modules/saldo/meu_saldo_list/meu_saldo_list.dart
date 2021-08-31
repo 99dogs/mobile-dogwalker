@@ -3,7 +3,6 @@ import 'package:dogwalker/shared/enum/state_enum.dart';
 import 'package:dogwalker/shared/themes/app_text_styles.dart';
 import 'package:dogwalker/shared/widgets/shimmer_list_tile/shimmer_list_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class MeuSaldoList extends StatefulWidget {
   const MeuSaldoList({Key? key}) : super(key: key);
@@ -14,7 +13,6 @@ class MeuSaldoList extends StatefulWidget {
 
 class _MeuSaldoListState extends State<MeuSaldoList> {
   final controller = SaldoController();
-  final formatter = NumberFormat.simpleCurrency(locale: "pt_Br");
 
   @override
   void initState() {
@@ -99,7 +97,7 @@ class _MeuSaldoListState extends State<MeuSaldoList> {
                                     ),
                                   ),
                                   trailing: Text(
-                                    formatter.format(
+                                    controller.formatter.format(
                                       controller.saldos[index].unitario,
                                     ),
                                   ),
@@ -125,7 +123,7 @@ class _MeuSaldoListState extends State<MeuSaldoList> {
                 child: Center(
                   child: Container(
                     child: Text(
-                      "Você ainda não cadastrou nenhuma qualificação.",
+                      "Você ainda não possui nenhum saldo disponível.",
                       style: TextStyles.input,
                     ),
                   ),

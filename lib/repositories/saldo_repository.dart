@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:dogwalker/shared/models/response_data_model.dart';
 import 'package:dogwalker/shared/models/saldo_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:dogwalker/shared/auth/auth_controller.dart';
-import 'package:dogwalker/shared/models/cidade_model.dart';
 import 'package:dogwalker/shared/models/usuario_logado_model.dart';
 
 class SaldoRepository {
@@ -47,6 +47,32 @@ class SaldoRepository {
       return saldos;
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future<String?> solicitarDeposito() async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/saldo/solicitar-deposito",
+      );
+
+      var response = await _client.post(
+        url,
+        headers: await this.headers(),
+      );
+
+      if (response.statusCode == 200) {
+        return "";
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        throw ("Ocorreu um problema inesperado.");
+      } else {
+        ResponseDataModel responseData =
+            ResponseDataModel.fromJson(response.body);
+
+        throw (responseData.mensagem);
+      }
+    } catch (e) {
+      throw (e);
     }
   }
 }

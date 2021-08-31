@@ -7,8 +7,10 @@ import 'package:intl/intl.dart';
 class SaldoController {
   final saldoRepository = SaldoRepository();
   final state = ValueNotifier<StateEnum>(StateEnum.start);
+  final formatter = NumberFormat.simpleCurrency(locale: "pt_Br");
 
   List<SaldoModel> saldos = [];
+  double totalSaldo = 0;
 
   getFormatedDate(_date) {
     var inputFormat = DateFormat('yyyy-MM-ddTHH:mm:ss');
@@ -21,7 +23,24 @@ class SaldoController {
     try {
       state.value = StateEnum.loading;
       saldos = await saldoRepository.buscarTodos();
+
+      saldos.forEach((element) {
+        totalSaldo += element.unitario;
+      });
+
       state.value = StateEnum.success;
+    } catch (e) {
+      print(e);
+      state.value = StateEnum.error;
+    }
+  }
+
+  Future<String?> solicitarDeposito() async {
+    try {
+      state.value = StateEnum.loading;
+      String? response = await saldoRepository.solicitarDeposito();
+      state.value = StateEnum.success;
+      return response;
     } catch (e) {
       print(e);
       state.value = StateEnum.error;
