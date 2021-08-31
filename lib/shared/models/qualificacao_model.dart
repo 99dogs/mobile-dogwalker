@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class QualificacaoModel {
   int? id;
   String? criado;

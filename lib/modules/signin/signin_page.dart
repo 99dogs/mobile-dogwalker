@@ -1,6 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dogwalker/modules/login/login_controller.dart';
 import 'package:dogwalker/modules/signin/signin_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';

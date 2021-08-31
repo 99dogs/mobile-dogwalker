@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:dogwalker/modules/login/login_controller.dart';
 import 'package:dogwalker/modules/register/register_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';
 import 'package:dogwalker/shared/models/usuario_login_model.dart';

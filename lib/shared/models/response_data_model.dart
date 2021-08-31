@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 class ResponseDataModel {
   final bool temErro;
   final String mensagem;

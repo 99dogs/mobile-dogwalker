@@ -33,7 +33,7 @@ class MultiSelectFormFieldWidget extends FormField<dynamic> {
     FormFieldSetter<dynamic>? onSaved,
     FormFieldValidator<dynamic>? validator,
     dynamic initialValue,
-    bool autovalidate = false,
+    AutovalidateMode autovalidate = AutovalidateMode.disabled,
     this.title = "",
     this.hintWidget = const Text('Tap to select one or more'),
     this.required = false,
@@ -63,7 +63,7 @@ class MultiSelectFormFieldWidget extends FormField<dynamic> {
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
-          autovalidate: autovalidate,
+          autovalidateMode: autovalidate,
           builder: (FormFieldState<dynamic> state) {
             List<Widget> _buildSelectedOptions(state) {
               List<Widget> selectedOptions = [];

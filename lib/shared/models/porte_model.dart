@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PorteModel {
   int? id;
   String? criado;

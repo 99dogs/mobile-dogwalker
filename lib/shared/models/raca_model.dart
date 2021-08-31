@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class RacaModel {
   int? id;
   String? criado;
