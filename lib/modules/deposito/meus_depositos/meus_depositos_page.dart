@@ -1,3 +1,4 @@
+import 'package:dogwalker/modules/deposito/meus_depositos_list/meus_depositos_list.dart';
 import 'package:dogwalker/shared/widgets/title_page_widget/title_page_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class MeusDepositosPage extends StatelessWidget {
           TitlePageWidget(
             title: "Meus depósitos",
           ),
+          MeusDepositosList(),
         ],
       ),
     );
