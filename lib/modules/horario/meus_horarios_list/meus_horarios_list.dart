@@ -104,7 +104,13 @@ class _MeusHorariosListState extends State<MeusHorariosList> {
                                           .toString(),
                                 ),
                                 trailing: Icon(Icons.arrow_right_alt),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    "/horario/detail",
+                                    arguments: controller.horarios[index].id,
+                                  );
+                                },
                               ),
                             ),
                             Padding(

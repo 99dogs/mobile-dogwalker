@@ -115,6 +115,23 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomNavigationBarWidget(
           paginaAtual: homeController.paginaAtual.value,
         ),
+        floatingActionButton: ValueListenableBuilder(
+          valueListenable: homeController.paginaAtual,
+          builder: (_, currentPage, __) {
+            if (currentPage == 1) {
+              return FloatingActionButton(
+                onPressed: () {
+                  if (currentPage == 1) {
+                    Navigator.pushReplacementNamed(context, "/horario/add");
+                  }
+                },
+                child: Icon(Icons.add),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

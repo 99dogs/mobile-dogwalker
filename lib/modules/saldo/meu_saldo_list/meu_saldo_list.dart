@@ -87,7 +87,7 @@ class _MeuSaldoListState extends State<MeuSaldoList> {
                                     padding: const EdgeInsets.only(bottom: 8),
                                     child: Text(
                                       "Saldo do passeio " +
-                                          controller.saldos[index].id
+                                          controller.saldos[index].passeioId
                                               .toString(),
                                       style: TextStyles.titleListTile,
                                     ),
