@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class DepositoModel {
   int? id;
   String? criado;

@@ -123,7 +123,7 @@ class _MeuSaldoListState extends State<MeuSaldoList> {
                 child: Center(
                   child: Container(
                     child: Text(
-                      "Você ainda não possui nenhum saldo disponível.",
+                      "Você não possui nenhum saldo disponível.",
                       style: TextStyles.input,
                     ),
                   ),

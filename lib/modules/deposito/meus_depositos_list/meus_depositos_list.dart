@@ -1,5 +1,6 @@
 import 'package:dogwalker/modules/deposito/deposito_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';
+import 'package:dogwalker/shared/themes/app_colors.dart';
 import 'package:dogwalker/shared/themes/app_text_styles.dart';
 import 'package:dogwalker/shared/widgets/shimmer_list_tile/shimmer_list_tile.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +110,77 @@ class _MeusDepositosListState extends State<MeusDepositosList> {
                                       ),
                                   textAlign: TextAlign.right,
                                 ),
-                                onTap: () {},
+                                onTap: () async {
+                                  await controller.buscarPorDeposito(
+                                      controller.depositos[index].id!);
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        child: ValueListenableBuilder(
+                                          valueListenable:
+                                              controller.stateBottomSheet,
+                                          builder: (_, value, __) {
+                                            StateEnum state =
+                                                value as StateEnum;
+                                            if (state == StateEnum.loading) {
+                                              return Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            } else {
+                                              return Container(
+                                                color: AppColors.background,
+                                                child: ListView.builder(
+                                                  itemCount:
+                                                      controller.saldos.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      title: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 8),
+                                                        child: Text(
+                                                          "Saldo do passeio " +
+                                                              controller
+                                                                  .saldos[index]
+                                                                  .passeioId
+                                                                  .toString(),
+                                                          style: TextStyles
+                                                              .titleListTile,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        controller
+                                                            .getFormatedDate(
+                                                          controller
+                                                              .saldos[index]
+                                                              .criado
+                                                              .toString(),
+                                                        ),
+                                                      ),
+                                                      trailing: Text(
+                                                        controller.formatter
+                                                            .format(
+                                                          controller
+                                                              .saldos[index]
+                                                              .unitario,
+                                                        ),
+                                                      ),
+                                                      onTap: () {},
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ),
                             Padding(

@@ -4,7 +4,6 @@ import 'package:dogwalker/shared/models/deposito_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:dogwalker/shared/auth/auth_controller.dart';
-import 'package:dogwalker/shared/models/cidade_model.dart';
 import 'package:dogwalker/shared/models/usuario_logado_model.dart';
 
 class DepositoRepository {

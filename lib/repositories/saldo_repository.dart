@@ -75,4 +75,21 @@ class SaldoRepository {
       throw (e);
     }
   }
+
+  Future<List<SaldoModel>> buscarPorDeposito(int depositoId) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/saldo/deposito/$depositoId",
+      );
+      var response = await _client.get(url, headers: await this.headers());
+
+      List<SaldoModel> saldos = (jsonDecode(response.body) as List)
+          .map((data) => SaldoModel.fromJson(data))
+          .toList();
+
+      return saldos;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
