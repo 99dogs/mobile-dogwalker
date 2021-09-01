@@ -77,28 +77,37 @@ class _MinhasQualificacoesListState extends State<MinhasQualificacoesList> {
                                   ),
                                 ],
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
-                                child: ListTile(
-                                  title: Padding(
-                                    padding: const EdgeInsets.only(bottom: 8),
-                                    child: Text(
-                                      controller.qualificacoes[index]
-                                              .modalidade! +
-                                          ' - ' +
-                                          controller
-                                              .qualificacoes[index].titulo!,
-                                      style: TextStyles.titleListTile,
-                                    ),
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 8,
+                                    bottom: 8,
                                   ),
-                                  subtitle: Text(
+                                  child: Text(
+                                    controller
+                                            .qualificacoes[index].modalidade! +
+                                        ' - ' +
+                                        controller.qualificacoes[index].titulo!,
+                                    style: TextStyles.titleListTile,
+                                  ),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 8,
+                                  ),
+                                  child: Text(
                                     controller.qualificacoes[index].descricao!,
                                   ),
-                                  trailing: Icon(Icons.arrow_right_alt),
-                                  onTap: () {},
                                 ),
+                                trailing: Icon(Icons.arrow_right_alt),
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    "/qualificacao/detail",
+                                    arguments:
+                                        controller.qualificacoes[index].id,
+                                  );
+                                },
                               ),
                             ),
                             Padding(

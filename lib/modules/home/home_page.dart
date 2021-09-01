@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: ValueListenableBuilder(
           valueListenable: homeController.paginaAtual,
           builder: (_, currentPage, __) {
-            if (currentPage == 1 || currentPage == 3) {
+            if (currentPage == 1 || currentPage == 3 || currentPage == 5) {
               if (currentPage == 1) {
                 return FloatingActionButton(
                   onPressed: () {
@@ -163,6 +163,17 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(Icons.account_balance_wallet_outlined),
                     label: Text("Solicitar depósito"),
                   ),
+                );
+              }
+              if (currentPage == 5) {
+                return FloatingActionButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      "/qualificacao/add",
+                    );
+                  },
+                  child: Icon(Icons.add),
                 );
               }
               return Container();

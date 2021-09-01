@@ -117,6 +117,7 @@ class MeuPerfilController {
       id: usuarioSalvo.id,
       nome: usuario.nome,
       token: usuarioSalvo.token,
+      fotoUrl: usuarioSalvo.fotoUrl,
     );
     await authController.salvarSessao(usuarioAtualizado);
   }

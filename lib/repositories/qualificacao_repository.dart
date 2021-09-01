@@ -59,4 +59,114 @@ class QualificacaoRepository {
       throw (e);
     }
   }
+
+  Future<String?> cadastrar(QualificacaoModel qualificacao) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/qualificacao",
+      );
+
+      var response = await _client.post(
+        url,
+        headers: await this.headers(),
+        body: jsonEncode(qualificacao),
+      );
+
+      if (response.statusCode == 200) {
+        return "";
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        throw ("Ocorreu um problema inesperado.");
+      } else {
+        ResponseDataModel responseData =
+            ResponseDataModel.fromJson(response.body);
+
+        throw (responseData.mensagem);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<QualificacaoModel> buscarPorId(int id) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/qualificacao/$id",
+      );
+
+      var response = await _client.get(
+        url,
+        headers: await this.headers(),
+      );
+
+      QualificacaoModel qualificacao = QualificacaoModel.fromJson(
+        jsonDecode(response.body),
+      );
+
+      if (response.statusCode == 200) {
+        return qualificacao;
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        throw ("Ocorreu um problema inesperado.");
+      } else {
+        ResponseDataModel responseData =
+            ResponseDataModel.fromJson(response.body);
+
+        throw (responseData.mensagem);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<bool> deletar(int id) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/qualificacao/$id",
+      );
+
+      var response = await _client.delete(
+        url,
+        headers: await this.headers(),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        throw ("Ocorreu um problema inesperado.");
+      } else {
+        ResponseDataModel responseData =
+            ResponseDataModel.fromJson(response.body);
+
+        throw (responseData.mensagem);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<String?> alterar(QualificacaoModel qualificacao) async {
+    try {
+      var url = Uri.parse(
+        _endpointApi + "/api/v1/qualificacao/" + qualificacao.id.toString(),
+      );
+
+      var response = await _client.put(
+        url,
+        headers: await this.headers(),
+        body: jsonEncode(qualificacao),
+      );
+
+      if (response.statusCode == 200) {
+        return "";
+      } else if (response.statusCode == 402 || response.statusCode == 502) {
+        throw ("Ocorreu um problema inesperado.");
+      } else {
+        ResponseDataModel responseData =
+            ResponseDataModel.fromJson(response.body);
+
+        throw (responseData.mensagem);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
 }

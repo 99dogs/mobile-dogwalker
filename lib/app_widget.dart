@@ -4,6 +4,9 @@ import 'package:dogwalker/modules/horario/cadastrar_horario/cadastrar_horario_pa
 import 'package:dogwalker/modules/horario/horario_detalhes/horario_detalhes_page.dart';
 import 'package:dogwalker/modules/horario/meus_horarios/meus_horarios_page.dart';
 import 'package:dogwalker/modules/passeio/maps_widget/maps_widget.dart';
+import 'package:dogwalker/modules/qualificacao/alterar_qualificacao/alterar_qualificacao_page.dart';
+import 'package:dogwalker/modules/qualificacao/cadastrar_qualificacao/cadastrar_qualificacao_page.dart';
+import 'package:dogwalker/modules/qualificacao/qualificacao_detalhes/qualificacao_detalhes_page.dart';
 import 'package:dogwalker/modules/saldo/meu_saldo/meu_saldo_page.dart';
 import 'package:dogwalker/modules/saldo/solicitar_deposito/solicitar_deposito_page.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +57,13 @@ class AppWdiget extends StatelessWidget {
         "/saldo/solicitar-deposito": (context) => SolicitarDepositoPage(),
         "/deposito/list": (context) => MeusDepositosPage(),
         "/maps/detail": (context) => MapsWidget(
+              id: ModalRoute.of(context)!.settings.arguments as int,
+            ),
+        "/qualificacao/add": (context) => CadastrarQualificacaoPage(),
+        "/qualificacao/detail": (context) => QualificacaoDetalhesPage(
+              id: ModalRoute.of(context)!.settings.arguments as int,
+            ),
+        "/qualificacao/edit": (context) => AlterarQualificacaoPage(
               id: ModalRoute.of(context)!.settings.arguments as int,
             ),
       },

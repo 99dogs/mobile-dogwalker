@@ -111,7 +111,7 @@ class _MeusDepositosListState extends State<MeusDepositosList> {
                                   textAlign: TextAlign.right,
                                 ),
                                 onTap: () async {
-                                  await controller.buscarPorDeposito(
+                                  controller.buscarPorDeposito(
                                       controller.depositos[index].id!);
                                   showModalBottomSheet(
                                     context: context,
