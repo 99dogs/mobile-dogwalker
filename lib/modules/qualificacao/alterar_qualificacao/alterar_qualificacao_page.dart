@@ -5,7 +5,6 @@ import 'package:dogwalker/shared/themes/app_colors.dart';
 import 'package:dogwalker/shared/themes/app_text_styles.dart';
 import 'package:dogwalker/shared/widgets/bottom_buttons/bottom_buttons_widget.dart';
 import 'package:dogwalker/shared/widgets/input_text/input_text_widget.dart';
-import 'package:dogwalker/shared/widgets/shimmer_list_tile/shimmer_list_tile.dart';
 import 'package:dogwalker/shared/widgets/title_page_widget/title_page_widget.dart';
 import 'package:flutter/material.dart';
 

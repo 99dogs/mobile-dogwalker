@@ -1,4 +1,3 @@
-import 'package:dogwalker/modules/horario/horario_controller.dart';
 import 'package:dogwalker/modules/qualificacao/qualificacao_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';
 import 'package:dogwalker/shared/themes/app_colors.dart';
