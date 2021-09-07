@@ -93,7 +93,9 @@ class _MeuPerfilPageState extends State<MeuPerfilPage> {
                     if (state == MeuPerfilFormState.loading) {
                       return ShimmerPhotoWidget();
                     } else {
-                      return FotoPerfil();
+                      return FotoPerfil(
+                        id: controller.usuario.id!,
+                      );
                     }
                   },
                 ),

@@ -120,12 +120,8 @@ class _MeusPasseiosListWidgetState extends State<MeusPasseiosListWidget> {
                                     borderRadius: BorderRadius.circular(30),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                        controller.passeios[index].tutor!
-                                                    .fotoUrl !=
-                                                null
-                                            ? controller
-                                                .passeios[index].tutor!.fotoUrl!
-                                            : 'https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png',
+                                        controller
+                                            .passeios[index].tutor!.fotoUrl!,
                                       ),
                                     ),
                                   ),
