@@ -253,42 +253,7 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                                         ),
                                                         label: Text("Aceitar"),
                                                         onPressed: () async {
-                                                          String? response =
-                                                              await controller
-                                                                  .alterarStatus(
-                                                            widget.id,
-                                                            "aceitar",
-                                                          );
-
-                                                          if (response !=
-                                                                  null &&
-                                                              response
-                                                                  .isNotEmpty) {
-                                                            CoolAlert.show(
-                                                              context: context,
-                                                              title:
-                                                                  "Ocorreu um problema\n",
-                                                              text: response,
-                                                              backgroundColor:
-                                                                  AppColors
-                                                                      .primary,
-                                                              type:
-                                                                  CoolAlertType
-                                                                      .error,
-                                                              confirmBtnText:
-                                                                  "Fechar",
-                                                              confirmBtnColor:
-                                                                  AppColors
-                                                                      .shape,
-                                                              confirmBtnTextStyle:
-                                                                  TextStyles
-                                                                      .buttonGray,
-                                                            );
-                                                          } else {
-                                                            await controller
-                                                                .init(
-                                                                    widget.id);
-                                                          }
+                                                          aceitarPasseio();
                                                         },
                                                       ),
                                                     ),
@@ -314,7 +279,9 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
                                                           ),
                                                         ),
                                                         label: Text("Recusar"),
-                                                        onPressed: () async {},
+                                                        onPressed: () async {
+                                                          recusarPasseio();
+                                                        },
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -512,6 +479,115 @@ class _PasseioDetalhesPageState extends State<PasseioDetalhesPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void aceitarPasseio() {
+    Widget cancelButton = ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(AppColors.grey),
+      ),
+      child: Text("Cancelar"),
+      onPressed: () async {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+    Widget accepetButton = ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(AppColors.success),
+      ),
+      child: Text("Aceitar"),
+      onPressed: () async {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        String? response = await controller.alterarStatus(
+          widget.id,
+          "aceitar",
+        );
+
+        if (response != null && response.isNotEmpty) {
+          CoolAlert.show(
+            context: context,
+            title: "Ocorreu um problema\n",
+            text: response,
+            backgroundColor: AppColors.primary,
+            type: CoolAlertType.error,
+            confirmBtnText: "Fechar",
+            confirmBtnColor: AppColors.shape,
+            confirmBtnTextStyle: TextStyles.buttonGray,
+          );
+        } else {
+          await controller.init(widget.id);
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Atenção."),
+      content: Text("Deseja realmente aceitar o passeio?"),
+      actions: [
+        cancelButton,
+        accepetButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void recusarPasseio() {
+    Widget cancelButton = ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(AppColors.grey),
+      ),
+      child: Text("Cancelar"),
+      onPressed: () async {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+    Widget removeButton = ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(AppColors.delete),
+      ),
+      child: Text("Recusar"),
+      onPressed: () async {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        String? response = await controller.alterarStatus(widget.id, "recusar");
+
+        if (response != null && response.isNotEmpty) {
+          CoolAlert.show(
+            context: context,
+            title: "Ocorreu um problema\n",
+            text: response,
+            backgroundColor: AppColors.primary,
+            type: CoolAlertType.error,
+            confirmBtnText: "Fechar",
+            confirmBtnColor: AppColors.shape,
+            confirmBtnTextStyle: TextStyles.buttonGray,
+          );
+        } else {
+          await controller.init(widget.id);
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Atenção."),
+      content: Text("Deseja realmente recusar o passeio?"),
+      actions: [
+        cancelButton,
+        removeButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
