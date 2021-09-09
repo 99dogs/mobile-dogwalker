@@ -25,7 +25,7 @@ class RegisterController {
       nome: nome,
       email: email,
       senha: senha,
-      tipo: "tutor",
+      tipo: "dogwalker",
     );
   }
 

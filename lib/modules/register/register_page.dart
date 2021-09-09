@@ -57,12 +57,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Column(
                         children: [
                           Text(
-                            "99Dogs",
+                            "Cadastre-se",
                             style: TextStyles.titleLogo,
-                          ),
-                          Text(
-                            "Melhor lugar para encontrar dogwalkers.",
-                            style: TextStyles.captionBoldBody,
                           ),
                         ],
                       ),

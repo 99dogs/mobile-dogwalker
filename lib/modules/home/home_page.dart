@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    buscarSaldo();
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
