@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.hasData) {
                 _usuario = snapshot.data as UsuarioLogadoModel;
                 String fotoUrl = "";
-                if (_usuario.fotoUrl!.isNotEmpty) {
+                if (_usuario.fotoUrl != null && _usuario.fotoUrl!.isNotEmpty) {
                   fotoUrl = _usuario.fotoUrl!;
                 } else {
                   fotoUrl =
