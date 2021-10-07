@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dogwalker">
    <application
-        android:label="dogwalker"
+        android:label="99Dogs - Dog walker"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
