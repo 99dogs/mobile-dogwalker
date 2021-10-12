@@ -40,7 +40,7 @@ class _SignInPageState extends State<SignInPage> {
           alignment: AlignmentDirectional.center,
           children: [
             Positioned(
-              top: size.height * 0.27,
+              top: size.height * 0.23,
               child: Container(
                 width: size.width - 35,
                 decoration: BoxDecoration(
@@ -55,12 +55,19 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       child: Column(
                         children: [
+                          Image.asset(
+                            'assets/images/app-logo.png',
+                            width: 100,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Text(
-                            "99Dogs",
+                            "Olá, dog walker.",
                             style: TextStyles.titleLogo,
                           ),
                           Text(
-                            "Escolha uma das opções de acesso ao app.",
+                            "Escolha uma das opções para acessar ao app.",
                             style: TextStyles.captionBoldBody,
                           ),
                         ],

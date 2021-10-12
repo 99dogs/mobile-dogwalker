@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
           alignment: AlignmentDirectional.center,
           children: [
             Positioned(
-              top: size.height * 0.2,
+              top: size.height * 0.15,
               child: Container(
                 width: size.width - 35,
                 decoration: BoxDecoration(
@@ -55,16 +55,23 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Column(
                         children: [
+                          Image.asset(
+                            'assets/images/app-logo.png',
+                            width: 100,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Text(
-                            "Dog walker",
-                            style: TextStyles.titleLogo,
+                            "Informe suas credenciais para acessar sua conta",
+                            style: TextStyles.captionBoldBody,
                           ),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                        bottom: 40,
+                        bottom: 15,
                       ),
                       child: Divider(),
                     ),
