@@ -28,13 +28,10 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.book_outlined),
-            title: Text("Termos de uso e privacidade"),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.article_outlined),
-            title: Text("Política de dados"),
-            onTap: () {},
+            title: Text("Política de dados e privacidade"),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, "/politica");
+            },
           ),
           ListTile(
             leading: Icon(Icons.help_center_outlined),

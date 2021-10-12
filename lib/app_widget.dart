@@ -4,6 +4,7 @@ import 'package:dogwalker/modules/horario/cadastrar_horario/cadastrar_horario_pa
 import 'package:dogwalker/modules/horario/horario_detalhes/horario_detalhes_page.dart';
 import 'package:dogwalker/modules/horario/meus_horarios/meus_horarios_page.dart';
 import 'package:dogwalker/modules/passeio/maps_widget/maps_widget.dart';
+import 'package:dogwalker/modules/politica-de-dados-e-privacidade/politica_de_dados_e_privacidade_page.dart';
 import 'package:dogwalker/modules/qualificacao/alterar_qualificacao/alterar_qualificacao_page.dart';
 import 'package:dogwalker/modules/qualificacao/cadastrar_qualificacao/cadastrar_qualificacao_page.dart';
 import 'package:dogwalker/modules/qualificacao/qualificacao_detalhes/qualificacao_detalhes_page.dart';
@@ -66,6 +67,7 @@ class AppWdiget extends StatelessWidget {
         "/qualificacao/edit": (context) => AlterarQualificacaoPage(
               id: ModalRoute.of(context)!.settings.arguments as int,
             ),
+        "/politica": (context) => PoliticaDeDadosEPrivacidadePage(),
       },
     );
   }
