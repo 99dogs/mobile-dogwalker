@@ -20,9 +20,9 @@ class DrawerWidget extends StatelessWidget {
               color: AppColors.primary,
             ),
             child: Center(
-              child: Text(
-                '99Dogs',
-                style: TextStyles.titleLogoWhite,
+              child: Image.asset(
+                'assets/images/logo-drawer.png',
+                width: 130,
               ),
             ),
           ),
