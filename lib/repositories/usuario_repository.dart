@@ -100,6 +100,10 @@ class UsuarioRepository {
           throw ("Percebemos que você é um tutor, este é um aplicativo dedicado para o dogwalker.");
         }
 
+        if (usuario.tipo == "ADMIN") {
+          throw ("Percebemos que você é um admin, este é um aplicativo dedicado para o dogwalker.");
+        }
+
         UsuarioLogadoModel usuarioLogado = UsuarioLogadoModel(
           id: usuario.id,
           nome: usuario.nome,
@@ -236,6 +240,10 @@ class UsuarioRepository {
 
         if (usuario.tipo == "TUTOR") {
           throw ("Percebemos que você é um tutor, este é um aplicativo dedicado para o dogwalker.");
+        }
+
+        if (usuario.tipo == "ADMIN") {
+          throw ("Percebemos que você é um admin, este é um aplicativo dedicado para o dogwalker.");
         }
 
         UsuarioLogadoModel usuarioLogado = UsuarioLogadoModel(
