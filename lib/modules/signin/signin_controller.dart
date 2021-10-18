@@ -39,6 +39,7 @@ class SigninController {
       );
 
       await authController.salvarSessao(usuarioAtualizado);
+      await usuarioRepository.atualizarTokenPushNotification();
 
       Navigator.pushReplacementNamed(context, "/home");
     } catch (error) {

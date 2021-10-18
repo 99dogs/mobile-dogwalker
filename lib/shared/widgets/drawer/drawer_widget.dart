@@ -21,7 +21,7 @@ class DrawerWidget extends StatelessWidget {
             ),
             child: Center(
               child: Image.asset(
-                'assets/images/logo-drawer.png',
+                'assets/images/logo-white.png',
                 width: 130,
               ),
             ),

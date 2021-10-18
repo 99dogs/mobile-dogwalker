@@ -1,4 +1,3 @@
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:dogwalker/modules/register/register_controller.dart';
 import 'package:dogwalker/shared/enum/state_enum.dart';
@@ -34,16 +33,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    loadDocument();
-  }
-
-  bool _isLoading = true;
-  PDFDocument document = PDFDocument();
-
-  loadDocument() async {
-    document = await PDFDocument.fromURL(
-        "https://cdn.statically.io/gh/99dogs/documents/master/politica-de-dados-e-privacidade.pdf");
-    setState(() => _isLoading = false);
   }
 
   @override
@@ -170,15 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             title: Text(
                                                 "Termos e condições de uso."),
                                             content: Container(
-                                              child: _isLoading
-                                                  ? Center(
-                                                      child:
-                                                          CircularProgressIndicator())
-                                                  : PDFViewer(
-                                                      document: document,
-                                                      zoomSteps: 1,
-                                                      showPicker: false,
-                                                    ),
+                                              child: Container(),
                                             ),
                                             actions: [
                                               ElevatedButton(

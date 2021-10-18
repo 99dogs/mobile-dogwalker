@@ -42,6 +42,7 @@ class LoginController {
         state.value = StateEnum.loading;
         UsuarioLogadoModel usuario = await _usuarioRepository.login(model);
         await authController.salvarSessao(usuario);
+        await _usuarioRepository.atualizarTokenPushNotification();
         state.value = StateEnum.success;
         Navigator.pushReplacementNamed(context, "/home");
       } catch (e) {

@@ -56,11 +56,11 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: [
                           Image.asset(
-                            'assets/images/app-logo.png',
-                            width: 100,
+                            'assets/images/logo-black.png',
+                            width: 130,
                           ),
                           SizedBox(
-                            height: 15,
+                            height: 30,
                           ),
                           Text(
                             "Informe suas credenciais para acessar sua conta",

@@ -56,15 +56,11 @@ class _SignInPageState extends State<SignInPage> {
                       child: Column(
                         children: [
                           Image.asset(
-                            'assets/images/app-logo.png',
-                            width: 100,
+                            'assets/images/logo-black.png',
+                            width: 130,
                           ),
                           SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            "Olá, dog walker.",
-                            style: TextStyles.titleLogo,
+                            height: 30,
                           ),
                           Text(
                             "Escolha uma das opções para acessar ao app.",

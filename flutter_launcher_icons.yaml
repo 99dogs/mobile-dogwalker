@@ -1,4 +1,6 @@
 flutter_icons:
   android: true
   ios: false
-  image_path: "assets/images/icon-dogwalker.jpeg"
+  image_path: "assets/images/icon.png"
+  adaptive_icon_background: "assets/images/icon-bk-fc.png"
+  adaptive_icon_foreground: "assets/images/icon-bk-fc.png"
