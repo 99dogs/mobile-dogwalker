@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dogwalker/shared/themes/app_colors.dart';
 import 'package:dogwalker/shared/widgets/title_page_widget/title_page_widget.dart';
+import 'package:pdf_render/pdf_render_widgets.dart';
 
 class PoliticaDeDadosEPrivacidadePage extends StatefulWidget {
   const PoliticaDeDadosEPrivacidadePage({Key? key}) : super(key: key);
@@ -43,7 +44,12 @@ class _PoliticaDeDadosEPrivacidadePageState
             Expanded(
               flex: 1,
               child: Container(
-                child: Container(),
+                child: PdfViewer.openAsset(
+                  'assets/politica-de-dados-e-privacidade.pdf',
+                  onError: (error) {
+                    print(error);
+                  },
+                ), // show the page-2
               ),
             ),
           ],

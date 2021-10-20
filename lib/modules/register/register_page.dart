@@ -5,6 +5,7 @@ import 'package:dogwalker/shared/models/usuario_login_model.dart';
 import 'package:dogwalker/shared/themes/app_colors.dart';
 import 'package:dogwalker/shared/themes/app_text_styles.dart';
 import 'package:dogwalker/shared/widgets/input_text/input_text_widget.dart';
+import 'package:pdf_render/pdf_render_widgets.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -151,37 +152,86 @@ class _RegisterPageState extends State<RegisterPage> {
                                 } else {
                                   return ElevatedButton(
                                     onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          // retorna um objeto do tipo Dialog
-                                          return AlertDialog(
-                                            title: Text(
-                                                "Termos e condições de uso."),
-                                            content: Container(
-                                              child: Container(),
-                                            ),
-                                            actions: [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: AppColors.delete,
+                                      showGeneralDialog(
+                                          context: context,
+                                          barrierDismissible: true,
+                                          barrierLabel:
+                                              MaterialLocalizations.of(context)
+                                                  .modalBarrierDismissLabel,
+                                          barrierColor: Colors.black45,
+                                          transitionDuration:
+                                              const Duration(milliseconds: 200),
+                                          pageBuilder: (BuildContext
+                                                  buildContext,
+                                              Animation animation,
+                                              Animation secondaryAnimation) {
+                                            return Center(
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    10,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height -
+                                                    200,
+                                                padding: EdgeInsets.all(20),
+                                                color: Colors.white,
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        child:
+                                                            PdfViewer.openAsset(
+                                                          'assets/politica-de-dados-e-privacidade.pdf',
+                                                          onError: (error) {
+                                                            print(error);
+                                                          },
+                                                        ), // show the page-2
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            primary: AppColors
+                                                                .delete,
+                                                          ),
+                                                          child: Text(
+                                                              "Não concordo"),
+                                                        ),
+                                                        ElevatedButton(
+                                                          onPressed: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            await controller
+                                                                .autenticar(
+                                                                    context);
+                                                          },
+                                                          child:
+                                                              Text("Concordo"),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
-                                                child: Text("Não concordo"),
                                               ),
-                                              ElevatedButton(
-                                                onPressed: () async {
-                                                  await controller
-                                                      .autenticar(context);
-                                                },
-                                                child: Text("Concordo"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                            );
+                                          });
                                     },
                                     child: Text("Cadastrar"),
                                   );
